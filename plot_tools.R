@@ -3,7 +3,7 @@ library(ggplot2)
 library(grid)
 library(gridExtra)
 
-size_mod <- -4
+size_mod <- -1
 
 my_theme <- theme(
   axis.text = element_text(size=13 + size_mod),

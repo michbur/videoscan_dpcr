@@ -61,18 +61,23 @@ plot_dens <- function(average) {
     my_theme
 }
 
-plot_dens(TRUE) + scale_x_continuous(expression(lambda))
+# plot_dens(TRUE) + scale_x_continuous(expression(lambda))
 
-p_scatter <- ggplot(dat, aes(x = ch_loc, y = ch_1, color = status, shape = status)) +
-  geom_point(size = 4) +
+p_scatter <- ggplotGrob(ggplot(dat, aes(x = ch_loc, y = ch_1, color = status, shape = status)) +
+  geom_point(size = 2) +
   geom_abline(slope = 1, linetype = "dashed") +
   scale_x_continuous("Location channel") +
-  scale_y_continuous("Channel 1") +
+  scale_y_continuous("Droplet detection channel") +
   scale_shape_discrete("Droplet status") +
   scale_color_manual("Droplet status", values = c("red", "blue")) +
-  my_theme
+  my_theme)
 
-p_dens <- plot_dens(FALSE) + 
+p_dens <- ggplotGrob(plot_dens(FALSE) + 
   #geom_vline(xintercept = sum(dat[["pos"]]), linetype = "dotted", size = 2) +
-  scale_x_continuous("Number of positive partitions")
+  scale_x_continuous("Number of positive partitions"))
 
+tiff("R_Diagramm.tiff", height = 10.32, width = 20, units = "cm", res = 150)
+grid.arrange(textGrob("A", x = 0.75, y = 0.9, gp=gpar(fontsize=24)), p_scatter,
+             textGrob("B", x = 0.75, y = 0.9, gp=gpar(fontsize=24)), p_dens,
+             nrow = 1, ncol = 4, widths = c(0.05, 0.95, 0.05, 0.95))
+dev.off()
