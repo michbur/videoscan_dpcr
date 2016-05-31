@@ -81,3 +81,27 @@ grid.arrange(textGrob("A", x = 0.75, y = 0.9, gp=gpar(fontsize=24)), p_scatter,
              textGrob("B", x = 0.75, y = 0.9, gp=gpar(fontsize=24)), p_dens,
              nrow = 1, ncol = 4, widths = c(0.05, 0.95, 0.05, 0.95))
 dev.off()
+
+
+tiff("size_distr.tiff", height = 10.32, width = 20, units = "cm", res = 150)  
+ggplot(dat, aes(x = size, color = status, fill = status)) +
+  geom_density(fill = NA, stat = "bin", linetype = "dashed", bins = 50) +
+  geom_histogram(bins = 50, alpha = 0.25) +
+  facet_wrap(~ status, ncol = 1) +
+  scale_x_continuous("Droplet size") +
+  scale_y_continuous("Count") +
+  scale_color_manual("Droplet status", values = c("red", "blue"))  +
+  scale_fill_manual("Droplet status", values = c("red", "blue"))  +
+  my_theme
+dev.off()
+
+tiff("ratio.tiff", height = 10.32, width = 20, units = "cm", res = 150)  
+ggplot(dat, aes(x = ratio, color = status, fill = status)) +
+  geom_density(stat = "bin", bins = 200, alpha = 0.25) +
+  geom_vline(xintercept = 1, linetype = "dashed", size = 2) +
+  scale_x_continuous("Ratio of focation and detection channel intensities") +
+  scale_y_continuous("Count") +
+  scale_color_manual("Droplet status", values = c("red", "blue"))  +
+  scale_fill_manual("Droplet status", values = c("red", "blue"))  +
+  my_theme
+dev.off()
